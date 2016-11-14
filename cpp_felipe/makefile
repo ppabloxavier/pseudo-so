@@ -22,4 +22,4 @@ Resources_mng.o:
 	$(CC) -c ./src/Resources_mng.cpp $(CFLAGS)
 
 clean:
-	rm *.o
+	rm -rf *.o

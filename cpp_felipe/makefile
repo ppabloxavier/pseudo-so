@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -iquote./include -Wall -g -O0 -ferror-limit=5
+CFLAGS = -iquote./include -Wall -g -O0
 
 all: dispatcher.o Memory_mng.o Process_mng.o Process.o Resources_mng.o
 	$(CC) -o ./bin/dispatcher dispatcher.o Memory_mng.o Process_mng.o \

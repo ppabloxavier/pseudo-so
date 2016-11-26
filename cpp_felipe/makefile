@@ -21,5 +21,8 @@ Process.o:
 Resources_mng.o:
 	$(CC) -c ./src/Resources_mng.cpp $(CFLAGS)
 
+run:
+	./bin/dispatcher ./doc/processes.txt
+
 clear:
 	rm -rf *.o

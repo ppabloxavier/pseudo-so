@@ -4,7 +4,7 @@ CFLAGS = -iquote./include -Wall -g -O0
 all: dispatcher.o Memory_mng.o Process_mng.o Process.o Resources_mng.o
 	$(CC) -o ./bin/dispatcher dispatcher.o Memory_mng.o Process_mng.o \
 	Process.o Resources_mng.o $(CFLAGS)
-	make clean
+	make clear
 
 dispatcher.o:
 	$(CC) -c ./src/dispatcher.cpp $(CFLAGS)
@@ -21,5 +21,5 @@ Process.o:
 Resources_mng.o:
 	$(CC) -c ./src/Resources_mng.cpp $(CFLAGS)
 
-clean:
+clear:
 	rm -rf *.o

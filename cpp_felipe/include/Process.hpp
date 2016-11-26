@@ -7,6 +7,7 @@ public:
       int init_time;
       int priority;
       int processor_time;
+      int elapsed_time;
       int memory_blocks;
       int memory_offset;
       bool real_time;

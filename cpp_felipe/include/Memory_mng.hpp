@@ -1,3 +1,5 @@
+#include <vector>
+
 #ifndef MEMORY_MNG_HPP
 #define MEMORY_MNG_HPP
 

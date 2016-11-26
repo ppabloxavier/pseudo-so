@@ -72,19 +72,19 @@ Na crição do processo, o dipatcher exibe as seguintes mensagens:
 
 */
 
+	Process_mng process_mng = Process_mng::getInstance();
 	string file_name;
-	std::vector<Process> processes;
 
 	// leitura do arquivo que contém os processos a serem criados. le tudo de uma vez e armazena num vetor de vetores de inteiros
 	// ou vai fazendo um por um?
-	read_process_file(file_name, &processes);
+	read_process_file(file_name, process_mng.getProcesses());
 
 	// fecha-se o arquivo (depende de como será o input)
 
 	// começa-se a "contar o tempo"
 
 	// Inicia cada processo do vetor de processos.
-	start_processes(&processes);
+	start_processes(process_mng.getProcesses());
 
 
 

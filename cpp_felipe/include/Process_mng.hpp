@@ -11,8 +11,10 @@
 using namespace std;
 
 class Process_mng {
-      int clock; // pode ser que a variável tenha outro tipo
+      uint64_t pid_counter;
+      uint64_t clock;
       Process *current_process;
+      vector<Process> processes;
 	vector<Process*> real_time_q;
 	vector<Process*> user_priority_1_q;
       vector<Process*> user_priority_2_q;
@@ -21,7 +23,19 @@ class Process_mng {
       // For the queues, lower numbers mean higher priorities. So 1 is the highest
       // and 3 is the highest queue priority.
 
+private:
+      Process_mng() {};
+
+public:
+      // Singleton
+      static Process_mng& getInstance() {
+            static Process_mng instance;
+            return instance;
+      };
+
       Process* getCurrent_process();
+
+      vector<Process>* getProcesses();
 
       vector<Process*>* getReal_time_q();
 

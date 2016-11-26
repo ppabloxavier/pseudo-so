@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -iquote./include -Wall -g -O0 -std=c++11
+CFLAGS = -iquote./include -Wall -g -O0 -std=c++11 
 
 all: dispatcher.o Memory_mng.o Process_mng.o Process.o Resources_mng.o
 	$(CC) -o ./bin/dispatcher dispatcher.o Memory_mng.o Process_mng.o \
@@ -22,7 +22,7 @@ Resources_mng.o:
 	$(CC) -c ./src/Resources_mng.cpp $(CFLAGS)
 
 run:
-	./bin/dispatcher ./doc/processes.txt
+	./bin/dispatcher ./doc/test01.txt
 
 clear:
 	rm -rf *.o

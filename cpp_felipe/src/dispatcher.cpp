@@ -13,6 +13,8 @@
 
 using namespace std;
 
+unsigned int globalProcessIds;
+
 // Printa as informações de um processo.
 //
 // Parâmetros:
@@ -39,8 +41,7 @@ void print_info(Process process) {
 //	void
 void read_processes_file(string fileName, std::vector<Process> *processes) {
 	ifstream inputFile;
-    int i;
-    Process process;
+    unsigned int i;
 	vector<int> processData; /* param order
 						1- init time
 						2- priority
@@ -56,11 +57,11 @@ void read_processes_file(string fileName, std::vector<Process> *processes) {
     inputFile.open(fileName.c_str());
 
 	if(inputFile.is_open()) {
- 		// read file until the end (if sucessfully opened)
+ 		// read file until the end
 	    string str;
 	    
-		while (getline(inputFile, str)) {
-			cout << "Processo atual: [" << str << "]" << endl;
+		while (getline(inputFile, str) && str.length() > 0) {
+			cout << "Linha atual: [" << str << "]" << endl;
 			stringstream ss(str);
 			while(ss >> i) {
 				processData.push_back(i);
@@ -68,13 +69,14 @@ void read_processes_file(string fileName, std::vector<Process> *processes) {
 					ss.ignore();
 				}
 			}
-			ss.str("");
-			ss.clear();
+			Process process(processData.at(0), processData.at(1), processData.at(2), processData.at(3), processData.at(4), processData.at(5),
+							processData.at(6), processData.at(7));
 
 			for (i=0; i < processData.size(); i++) {
 				cout << processData.at(i) << ' ';
 			}
-			cout << endl;
+
+			processData.clear();
 		}
 
 		// close file
@@ -117,6 +119,8 @@ Na crição do processo, o dipatcher exibe as seguintes mensagens:
 
 */
 
+	// variavel utilizada para dar os pids para os processos recém criados. deve ser diferente para cada um.
+	globalProcessIds = 1;
 	string fileName = argv[1];
 	std::vector<Process> processes;
 

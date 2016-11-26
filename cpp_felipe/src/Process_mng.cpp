@@ -25,19 +25,19 @@ vector<Process*>* Process_mng::getUser_priority_3_q() {
 void Process_mng::setCurrent_process(Process *current_process){};
 
 void Process_mng::add_process(Process *p) {
-      if (p->priority < 0 || p->priority > 3) {
+      if (p->current_priority < 0 || p->current_priority > 3) {
             printf("Valor de prioridade não permitido (%d). O processo com pid %d não será inicializado.\n", p->priority, p->pid);
       }
-      else if (p->priority == 0) {
+      else if (p->current_priority == 0) {
             this->real_time_q.push_back(p);
       }
-      else if (p->priority == 1) {
+      else if (p->current_priority == 1) {
             this->user_priority_1_q.push_back(p);
       }
-      else if (p->priority == 2) {
+      else if (p->current_priority == 2) {
             this->user_priority_2_q.push_back(p);
       }
-      else if (p->priority == 3) {
+      else if (p->current_priority == 3) {
             this->user_priority_3_q.push_back(p);
       }
 
@@ -68,7 +68,27 @@ void Process_mng::exec() {
       }
 };
 
-void Process_mng::return_to_queue(Process *process){};
+void Process_mng::return_to_queue(Process *p) {
+      if (this->current_process->current_priority == 1) {
+            this->current_process->current_priority = 2;
+            this->user_priority_1_q.erase(this->user_priority_1_q.begin());
+            this->add_process(p);
+      }
+      else if (this->current_process->current_priority == 2) {
+            this->current_process->current_priority = 3;
+            this->user_priority_2_q.erase(this->user_priority_2_q.begin());
+            this->add_process(p);
+      }
+      else if (this->current_process->current_priority == 3) {
+            if (this->current_process->priority == 1)
+                  this->current_process->current_priority = 1;
+            else if (this->current_process->priority == 2)
+                  this->current_process->current_priority = 2;
+
+            this->user_priority_3_q.erase(this->user_priority_3_q.begin());
+            this->add_process(p);
+      }
+};
 
 void Process_mng::del_process(){};
 // 2 queues: real time (priority 0 - FIFO) and user processes (priorities 1, 2 and 3.)

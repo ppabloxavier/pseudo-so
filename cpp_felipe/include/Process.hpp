@@ -6,6 +6,7 @@ public:
       int pid;
       int init_time;
       int priority;
+      int current_priority;
       int processor_time;
       int elapsed_time;
       int memory_blocks;

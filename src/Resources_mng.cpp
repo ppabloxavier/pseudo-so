@@ -11,4 +11,13 @@ há preempção na alocação dos dispositivos de E/S.
 Processos de tempo-real não precisam de recursos de I/O e podem ter tamanho fixo, ficando a cargo
 do programador. */
 
+#include "Resources_mng.hpp"
 
+Resources_mng::Resources_mng() {
+
+};
+
+Resources_mng::~Resources_mng() {
+      //do nothing
+};    
+      

@@ -13,11 +13,11 @@ public:
       int elapsed_time;
       int memory_blocks;
       int memory_offset;
-      bool real_time;
       bool printer;
       bool scanner;
       bool modem;
       bool sata;
+      bool executing;
 
       // Variável utilizada para facilitar a remoção de um processo. Podem ignorar ela.
       // Ela aponta para posição do elemento no vetor.
@@ -25,8 +25,8 @@ public:
 
       Process();
 
-      Process(int pid, int init_time, int priority, int processor_time, int memory_blocks,
-              bool real_time, bool printer, bool scanner, bool modem, bool sata);
+      Process(int init_time, int priority, int processor_time, int memory_blocks
+              , bool printer, bool scanner, bool modem, bool sata);
 
 
 };

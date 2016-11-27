@@ -11,9 +11,9 @@
 #include "../include/Process.hpp"
 #include "../include/Resources_mng.hpp"
 
-using namespace std;
+#define DEBUG
 
-unsigned int globalProcessIds;
+using namespace std;
 
 // Printa as informações de um processo.
 //
@@ -39,52 +39,60 @@ void print_info(Process process) {
 //	*processes: ponteiro para o vetor no qual os processos serão salvos.
 // Retorno:
 //	void
-void read_processes_file(string fileName, std::vector<Process> *processes) {};
-// 	ifstream inputFile;
-//     unsigned int i;
-// 	vector<int> processData; /* param order
-// 						1- init time
-// 						2- priority
-// 						3- cpuTime
-// 						4- memBlocks
-// 						5- printerCode
-// 						6- scannerCode
-// 						7- modemCode
-// 						8- diskCode
-// 						 */
-//
-//     // open file for reading
-//     inputFile.open(fileName.c_str());
-//
-// 	if(inputFile.is_open()) {
-//  		// read file until the end
-// 	    string str;
-//
-// 		while (getline(inputFile, str) && str.length() > 0) {
-// 			cout << "Linha atual: [" << str << "]" << endl;
-// 			stringstream ss(str);
-// 			while(ss >> i) {
-// 				processData.push_back(i);
-// 				if (ss.peek() == ',') {
-// 					ss.ignore();
-// 				}
-// 			}
-// 			Process process(processData.at(0), processData.at(1), processData.at(2), processData.at(3), processData.at(4), processData.at(5),
-// 							processData.at(6), processData.at(7));
-//
-// 			for (i=0; i < processData.size(); i++) {
-// 				cout << processData.at(i) << ' ';
-// 			}
-//
-// 			processData.clear();
-// 		}
-//
-// 		// close file
-// 	    inputFile.close();
-//  	} else {
-//  		cout << "Error opening file." << endl;
-//  	}
-// }
+void read_processes_file(string fileName, std::vector<Process> *processes) {
+	ifstream inputFile;
+    unsigned int i;
+	vector<int> processData; /* param order
+						1- init time
+						2- priority
+						3- cpuTime
+						4- memBlocks
+						5- printerCode
+						6- scannerCode
+						7- modemCode
+						8- diskCode
+						 */
+
+    // open file for reading
+    inputFile.open(fileName.c_str());
+
+	if(inputFile.is_open()) {
+ 		// read file until the end
+	    string str;
+
+		while (getline(inputFile, str) && str.length() > 0) {
+			cout << "Linha atual: [" << str << "]" << endl;
+			stringstream ss(str);
+			while(ss >> i) {
+				processData.push_back(i);
+				if (ss.peek() == ',') {
+					ss.ignore();
+				}
+			}
+			Process process(processData.at(0), processData.at(1), processData.at(2), processData.at(3), processData.at(4), processData.at(5),
+							processData.at(6), processData.at(7));
+
+			#ifdef DEBUG
+			for (i=0; i < processData.size(); i++) {
+				cout << processData.at(i) << ' ';
+			}
+			#endif
+
+			(*processes).push_back(process);
+
+			// Salva a posição do processo no vetor de processos. Isso
+			// facilita a remoção do processo posteriormente.
+			(*processes).back().it = (*processes).end() - 1;
+
+			processData.clear();
+		}
+
+		// close file
+	    inputFile.close();
+ 	} else {
+ 		cout << "Error opening file." << endl;
+ 	}
+};
 
 // Inicia cada processo do vetor de processos.
 // Para cada processo é necessário:
@@ -120,17 +128,49 @@ Na crição do processo, o dipatcher exibe as seguintes mensagens:
 */
 
 	Process_mng process_mng = Process_mng::getInstance();
+	uint64_t clock = 0;
 	string file_name = argv[1];
+	vector<Process> processes;
+	vector<Process>::iterator it;
 
 	// leitura do arquivo que contém os processos a serem criados. le tudo de uma vez
-	read_processes_file(file_name, process_mng.getProcesses());
+	read_processes_file(file_name, &processes);
 
-	// fecha-se o arquivo (depende de como será o input)
+	for (it = processes.begin(); it < processes.end(); it++) {
+		// Primeiro verificar tempo de chegada (clock).
 
-	// começa-se a "contar o tempo"
+		// Checar recursos.
 
-	// Inicia cada processo do vetor de processos.
-	start_processes(process_mng.getProcesses());
+		// Depois checar se tem memória e alocar, caso possível.
+
+		// Se tiver memória e recursos, adicionar nos processos prontos.
+		if (process_mng.add_process(&*it) )
+			it->executing = 1;
+		else
+			it->executing = 0;
+	}
+
+	// Começar a execução dos processos
+	while(1) {
+		this_thread::sleep_for(chrono::seconds(1));
+
+		clock++;
+
+		if (process_mng.exec() ) {
+			// Retirar o processo das filas do gerenciador de processos.
+			process_mng.del_process();
+			// Liberar memória associada ao processo.
+			// Liberar recursos associados ao processo.
+		}
+
+		// Adicionar processos que chegaram nesse instante ou processos
+		// que estavam esperando por memória ou recursos.
+
+
+	}
+
+
+
 
 
 

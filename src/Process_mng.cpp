@@ -2,12 +2,21 @@
 
 using namespace std;
 
-Process* Process_mng::getCurrent_process() {
-      return current_process;
+// Inicializando variáveis de classe
+uint64_t Process_mng::pid_counter = 0;
+Process *Process_mng::current_process = NULL;
+uint64_t Process_mng::executing_counter = 0;
+
+uint64_t Process_mng::getPid_counter() {
+      return Process_mng::pid_counter;
 };
 
-vector<Process>* Process_mng::getProcesses() {
-      return &processes;
+Process* Process_mng::getCurrent_process() {
+      return Process_mng::current_process;
+};
+
+uint64_t Process_mng::getExecuting_counter() {
+      return Process_mng::executing_counter;
 };
 
 vector<Process*>* Process_mng::getReal_time_q() {
@@ -40,42 +49,48 @@ void Process_mng::setCurrent_process(Process *current_process){};
 //    p: processo a ser adicionado a fila de prontos.
 //
 // Retorno:
-//    void
-void Process_mng::add_process(Process p) {
-      if (processes.size() == 1000) {
+//    int: 1 se o processo foi adicionado com sucesso.
+//         0 se o processo não foi adicionado a fila de prontos.
+int Process_mng::add_process(Process *p) {
+      if (executing_counter == 1000) {
             printf("O número máximo de processos é 1000. Processo não adicionado.\n");
+            return 0;
       }
-      else if (p.current_priority < 0 || p.current_priority > 3) {
-            printf("Valor de prioridade não permitido (%d). O processo com pid %d não será inicializado.\n", p.priority, p.pid);
+      else if (p->current_priority < 0 || p->current_priority > 3) {
+            printf("Valor de prioridade não permitido (%d). O processo com pid %d não será inicializado.\n", p->priority, p->pid);
+            return 0;
       }
       else {
-            // Adiciona o processo ao vetor de processos prontos.
-            processes.push_back(p);
-            // Salava um iterador que aponta para o processo no vetor de processos.
-            processes.back().it = processes.end() - 1;
+            executing_counter++;
 
-            if (p.current_priority == 0) {
-                  real_time_q.push_back(&processes.back());
+            if (p->current_priority == 0) {
+                  real_time_q.push_back(p);
             }
-            else if (p.current_priority == 1) {
-                  user_priority_1_q.push_back(&processes.back());
+            else if (p->current_priority == 1) {
+                  user_priority_1_q.push_back(p);
             }
-            else if (p.current_priority == 2) {
-                  user_priority_2_q.push_back(&processes.back());
+            else if (p->current_priority == 2) {
+                  user_priority_2_q.push_back(p);
             }
-            else if (p.current_priority == 3) {
-                  user_priority_3_q.push_back(&processes.back());
+            else if (p->current_priority == 3) {
+                  user_priority_3_q.push_back(p);
             }
       }
 
-      return;
+      return 1;
 };
 
 
+// Executa o processo e, caso o processo tenha acabado de executar, avisa o
+// dispatcher, para que ele chames as funções necessárias para deletar o processo.
 //
+// Parâmetros:
+//    void
 //
-//
-void Process_mng::exec() {
+// Retorno:
+//    1 se o processo tiver acabado de executar.
+//    0 se ele ainda precisa de tempo de cpu.
+int Process_mng::exec() {
       while(1) {
             if (!real_time_q.empty())
                   current_process = real_time_q[0];
@@ -86,16 +101,13 @@ void Process_mng::exec() {
             else if (!user_priority_3_q.empty())
                   current_process = user_priority_3_q[0];
 
-            this_thread::sleep_for(chrono::seconds(1));
-
-            clock++;
-
             current_process->elapsed_time++;
 
             if (current_process->elapsed_time == current_process->processor_time)
-                  del_process();
+                  return 1;
             else
                   return_to_queue();
+                  return 0;
       }
 };
 
@@ -143,21 +155,19 @@ void Process_mng::return_to_queue() {
 
 void Process_mng::del_process(){
       if (current_process->priority == 0) {
-            processes.erase(real_time_q[0]->it);
             real_time_q.erase(real_time_q.begin());
       }
       else if (current_process->current_priority == 1) {
-            processes.erase(user_priority_1_q[0]->it);
             user_priority_1_q.erase(user_priority_1_q.begin());
       }
 
       else if (current_process->current_priority == 2) {
-            processes.erase(user_priority_2_q[0]->it);
             user_priority_2_q.erase(user_priority_2_q.begin());
       }
 
       else if (current_process->current_priority == 3) {
-            processes.erase(user_priority_3_q[0]->it);
             user_priority_3_q.erase(user_priority_3_q.begin());
       }
+
+      executing_counter--;
 };

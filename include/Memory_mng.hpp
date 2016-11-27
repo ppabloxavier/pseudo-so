@@ -1,6 +1,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include "Process.hpp"
 
 #ifndef MEMORY_MNG_HPP
 #define MEMORY_MNG_HPP
@@ -11,18 +12,21 @@
 #define USER_END 1023
 
 class Memory_mng {
-public:
-	bool ramMemory[1024];
-	std::map<int, int> processOffset;
+	// our one and only RAM memory. 64 blocks for real-time process and 960 blocks to user processes
+	std::array<bool,1024> ramMemory;
 
+	// standard constructor
 	Memory_mng();
 
-	void allocateMemory(int pid, int offset);
+public:
+	// allocate memory to process sended. occupy RAM and mark the offset in the process
+	void allocateMemory(Process process);
 
-	int getProcessOffset(int pid);
+	// deallocate memory occupied by the process sended. deoccupy RAM. process will be dealt elsewhere
+	void deallocateMemory(Process process);
 
+	// get the size of memory available starting from the offset sended
 	int getSizeOfFreeMemory(int offset);
-
 };
 
 #endif

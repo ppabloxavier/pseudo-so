@@ -5,6 +5,7 @@ class Resources_mng {
 public:
 	Resources_mng();
 	~Resources_mng();
+private:
 };
 
 #endif

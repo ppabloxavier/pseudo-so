@@ -1,23 +1,24 @@
 #include "../include/Memory_mng.hpp"
 
-Memory_mng::Memory_mng(); {
+Memory_mng::Memory_mng() {
 
 }
 
-Memory_mng::allocateMemory(int pid, int offset) {
+void Memory_mng::allocateMemory(int pid, int offset) {
 
 }
 
-Memory_mng::getProcessOffset(int pid) {
+int Memory_mng::getProcessOffset(int pid) {
 	std::map<int,int>::iterator it = processOffset.find(pid);
 	if (it != processOffset.end()) {
 		return it->second;
 	} else {
-		cout << "Process not allocated" << endl;
+		std::cout << "Process not allocated" << std::endl;
+		return -1;
 	}
 }
 
-Memory_mng::getSizeOfFreeMemory(int offset) {
+int Memory_mng::getSizeOfFreeMemory(int offset) {
 	int i, size = 0;
 
 	i = offset;

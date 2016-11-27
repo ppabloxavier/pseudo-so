@@ -1,3 +1,5 @@
+#include <iostream>
+#include <map>
 #include <vector>
 
 #ifndef MEMORY_MNG_HPP
@@ -11,15 +13,15 @@
 class Memory_mng {
 public:
 	bool ramMemory[1024];
-	std::vector<int,int> processOffset;
+	std::map<int, int> processOffset;
 
 	Memory_mng();
 
-	allocateMemory(int pid);
+	void allocateMemory(int pid, int offset);
 
-	getProcessOffset(int pid);
+	int getProcessOffset(int pid);
 
-	getSizeOfFreeMemory(int offset);
+	int getSizeOfFreeMemory(int offset);
 
 };
 

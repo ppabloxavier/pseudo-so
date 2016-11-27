@@ -1,5 +1,0 @@
-http://www.learncpp.com/
-
-http://www.cplusplus.com/doc/tutorial/
-
-https://www.tutorialspoint.com/cplusplus/

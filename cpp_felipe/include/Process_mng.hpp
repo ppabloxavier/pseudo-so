@@ -48,7 +48,7 @@ public:
       void setCurrent_process(Process *current_process);
 
       // Adds the process to the appropriate queue.
-      void add_process(Process *p);
+      void add_process(Process p);
 
       // Executes the process.
       void exec();
@@ -56,7 +56,7 @@ public:
       // Returns the process to the appropriate queue.
       // After the process is executed for its quantum, its priority is updated
       // and the process is moved to another queue.
-      void return_to_queue(Process *process);
+      void return_to_queue();
 
       // Delete process.
       void del_process();

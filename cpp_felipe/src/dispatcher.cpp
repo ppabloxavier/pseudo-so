@@ -39,52 +39,52 @@ void print_info(Process process) {
 //	*processes: ponteiro para o vetor no qual os processos serão salvos.
 // Retorno:
 //	void
-void read_processes_file(string fileName, std::vector<Process> *processes) {
-	ifstream inputFile;
-    unsigned int i;
-	vector<int> processData; /* param order
-						1- init time
-						2- priority
-						3- cpuTime
-						4- memBlocks
-						5- printerCode
-						6- scannerCode
-						7- modemCode
-						8- diskCode
-						 */
-
-    // open file for reading
-    inputFile.open(fileName.c_str());
-
-	if(inputFile.is_open()) {
- 		// read file until the end
-	    string str;
-
-		while (getline(inputFile, str) && str.length() > 0) {
-			cout << "Linha atual: [" << str << "]" << endl;
-			stringstream ss(str);
-			while(ss >> i) {
-				processData.push_back(i);
-				if (ss.peek() == ',') {
-					ss.ignore();
-				}
-			}
-			Process process(processData.at(0), processData.at(1), processData.at(2), processData.at(3), processData.at(4), processData.at(5),
-							processData.at(6), processData.at(7));
-
-			for (i=0; i < processData.size(); i++) {
-				cout << processData.at(i) << ' ';
-			}
-
-			processData.clear();
-		}
-
-		// close file
-	    inputFile.close();
- 	} else {
- 		cout << "Error opening file." << endl;
- 	}
-}
+void read_processes_file(string fileName, std::vector<Process> *processes) {};
+// 	ifstream inputFile;
+//     unsigned int i;
+// 	vector<int> processData; /* param order
+// 						1- init time
+// 						2- priority
+// 						3- cpuTime
+// 						4- memBlocks
+// 						5- printerCode
+// 						6- scannerCode
+// 						7- modemCode
+// 						8- diskCode
+// 						 */
+//
+//     // open file for reading
+//     inputFile.open(fileName.c_str());
+//
+// 	if(inputFile.is_open()) {
+//  		// read file until the end
+// 	    string str;
+//
+// 		while (getline(inputFile, str) && str.length() > 0) {
+// 			cout << "Linha atual: [" << str << "]" << endl;
+// 			stringstream ss(str);
+// 			while(ss >> i) {
+// 				processData.push_back(i);
+// 				if (ss.peek() == ',') {
+// 					ss.ignore();
+// 				}
+// 			}
+// 			Process process(processData.at(0), processData.at(1), processData.at(2), processData.at(3), processData.at(4), processData.at(5),
+// 							processData.at(6), processData.at(7));
+//
+// 			for (i=0; i < processData.size(); i++) {
+// 				cout << processData.at(i) << ' ';
+// 			}
+//
+// 			processData.clear();
+// 		}
+//
+// 		// close file
+// 	    inputFile.close();
+//  	} else {
+//  		cout << "Error opening file." << endl;
+//  	}
+// }
 
 // Inicia cada processo do vetor de processos.
 // Para cada processo é necessário:

@@ -15,11 +15,78 @@ do programador. */
 #include "../include/Process.hpp"
 
 bool Resources_mng::allocateResources(Process process) {
-	return false;
+	if(!checkResourcesAvailability(process))
+		return false;
+
+	if(process.scanner) {
+		for(bool &element : scanners)
+			if(element == true) {
+				element = false;
+				break;
+			}
+	}
+
+	if(process.printer) {
+		for(bool &element : printers)
+			if(element == true) {
+				element = false;
+				break;
+			}
+	}
+
+	if(process.modem) {
+		for(bool &element : modems)
+			if(element == true) {
+				element = false;
+				break;
+			}
+	}
+
+	if(process.sata) {
+		for(bool &element : satas)
+			if(element == true) {
+				element = false;
+				break;
+			}
+	}
+
+	return true;
 }
 
 bool Resources_mng::deallocateResources(Process process) {
-	return false;
+	if(process.scanner) {
+		for(bool &element : scanners)
+			if(element == false) {
+				element = true;
+				break;
+			}
+	}
+
+	if(process.printer) {
+		for(bool &element : printers)
+			if(element == false) {
+				element = true;
+				break;
+			}
+	}
+
+	if(process.modem) {
+		for(bool &element : modems)
+			if(element == false) {
+				element = true;
+				break;
+			}
+	}
+
+	if(process.sata) {
+		for(bool &element : satas)
+			if(element == false) {
+				element = true;
+				break;
+			}
+	}
+
+	return true;
 }
 
 bool Resources_mng::checkResourcesAvailability(Process process) const {

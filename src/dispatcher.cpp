@@ -120,7 +120,7 @@ Na crição do processo, o dipatcher exibe as seguintes mensagens:
 	for (it = processes.begin(); it < processes.end(); it++) {
 		// Primeiro verificar tempo de chegada (clock).
 
-		// Checar recursos.
+		//allocateResources(process)
 
 		// Depois checar se tem memória e alocar, caso possível.
 

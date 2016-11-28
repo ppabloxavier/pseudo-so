@@ -4,7 +4,7 @@ Memory_mng::Memory_mng() {
 
 }
 
-void allocateMemory(Process process) {
+void Memory_mng::allocateMemory(Process process) {
 	bool allocationOcurred = false;
 	int i, j, begin, end, freeSize, offset;
 	if(process.priority <= 0) {
@@ -51,7 +51,7 @@ void allocateMemory(Process process) {
 
 }
 
-void deallocateMemory(Process process) {
+void Memory_mng::deallocateMemory(Process process) {
 	int i;
 	for(i = process.memory_offset; i <= (process.memory_offset + process.memory_blocks); i++) {
 		ramMemory.at(i) = false;

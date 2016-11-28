@@ -63,6 +63,9 @@ int Process_mng::add_process(Process *p) {
       else {
             executing_counter++;
 
+            p->pid = Process_mng::pid_counter;
+            Process_mng::pid_counter++;
+
             if (p->current_priority == 0) {
                   real_time_q.push_back(p);
             }
@@ -102,6 +105,9 @@ int Process_mng::exec() {
                   current_process = user_priority_3_q[0];
 
             current_process->elapsed_time++;
+
+            cout << "P " << current_process->pid << " -- executando -- ";
+            cout << "instrução " << current_process->elapsed_time << endl;
 
             if (current_process->elapsed_time == current_process->processor_time)
                   return 1;

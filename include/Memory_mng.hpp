@@ -1,10 +1,11 @@
+#ifndef MEMORY_MNG_HPP
+#define MEMORY_MNG_HPP
+
 #include <iostream>
 #include <map>
 #include <vector>
+#include <array>
 #include "Process.hpp"
-
-#ifndef MEMORY_MNG_HPP
-#define MEMORY_MNG_HPP
 
 #define REAL_TIME_START 0
 #define REAL_TIME_END 63

@@ -17,7 +17,7 @@
 Process::Process(int init_time, int priority, int processor_time, int memory_blocks
                  , bool printer, bool scanner, bool modem, bool sata)
 {
-      this->pid = pid;
+      this->pid = -1;
       this->init_time = init_time;
       this->priority = priority;
       this->current_priority = priority;

@@ -94,25 +94,6 @@ void read_processes_file(string fileName, std::vector<Process> *processes) {
  	}
 };
 
-// Inicia cada processo do vetor de processos.
-// Para cada processo é necessário:
-// 1 - Alocar memória.
-// 2 - Colocar o processo em uma das filas do gerenciador de processos.
-// 3 - Chamar a função print_info para printar as informações de cada processo.
-//
-// Parâmetros:
-//	*process: ponteiro para o vetor de processos.
-// Retorno:
-//	void
-void start_processes(std::vector<Process> *processes) {
-	std::vector<Process>::iterator it;
-
-	// Printando as informações de todos os processos.
-	for (it = processes->begin(); it != processes->end(); it++) {
-		print_info(*it);
-	}
-}
-
 int main (int argc, char *argv[]) {
 
 /*
@@ -144,8 +125,10 @@ Na crição do processo, o dipatcher exibe as seguintes mensagens:
 		// Depois checar se tem memória e alocar, caso possível.
 
 		// Se tiver memória e recursos, adicionar nos processos prontos.
-		if (process_mng.add_process(&*it) )
+		if (process_mng.add_process(&*it) ) {
 			it->executing = 1;
+			print_info(*it);
+		}
 		else
 			it->executing = 0;
 	}
@@ -168,11 +151,6 @@ Na crição do processo, o dipatcher exibe as seguintes mensagens:
 
 
 	}
-
-
-
-
-
 
 	return 0;
 }

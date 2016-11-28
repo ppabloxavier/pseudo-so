@@ -4,6 +4,7 @@
 #include <vector>
 #include <thread>
 #include <chrono>
+#include <iostream>
 #include "../include/Process.hpp"
 
 #define QUANTUM 1

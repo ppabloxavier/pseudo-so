@@ -120,7 +120,8 @@ Na crição do processo, o dipatcher exibe as seguintes mensagens:
 	for (it = processes.begin(); it < processes.end(); it++) {
 		// Primeiro verificar tempo de chegada (clock).
 
-		//allocateResources(process)
+		// Checar recursos
+		// allocateResources(process)
 
 		// Depois checar se tem memória e alocar, caso possível.
 
@@ -143,6 +144,7 @@ Na crição do processo, o dipatcher exibe as seguintes mensagens:
 			// Retirar o processo das filas do gerenciador de processos.
 			process_mng.del_process();
 			// Liberar memória associada ao processo.
+			// deallocateResources(process)
 			// Liberar recursos associados ao processo.
 		}
 

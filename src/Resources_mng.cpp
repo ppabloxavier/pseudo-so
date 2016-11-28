@@ -1,23 +1,12 @@
-/* Estrutura dos Recursos Disponíveis
-O pseudo-SO deve, além de escalonar o processo no compartilhamento da CPU, e gerenciar o
-espaço de memória de acordo com as áreas reservadas, ele deve gerenciar os seguintes recursos:
-• 1 scanner
-• 2 impressoras
-• 1 modem
-• 2 dispositivos SATA
-Todos os processos, com exceção daqueles de tempo-real podem obter qualquer um desses
-recursos. O pseudo-SO deve garantir que cada recurso seja alocado para um proceso por vez. Portanto, não
-há preempção na alocação dos dispositivos de E/S.
-Processos de tempo-real não precisam de recursos de I/O e podem ter tamanho fixo, ficando a cargo
-do programador. */
-
 #include "../include/Resources_mng.hpp"
 #include "../include/Process.hpp"
 
+//allocates every resource needed, doesn't allocates anything if not needed
 bool Resources_mng::allocateResources(Process process) {
-	if(!checkResourcesAvailability(process))
-		return false;
+	if(!checkResourcesAvailability(process)) //check resources availability
+		return false; //returns false if resources are unavailable
 
+	//if needed, allocates the free scanner
 	if(process.scanner) {
 		for(bool &element : scanners)
 			if(element == true) {
@@ -26,6 +15,7 @@ bool Resources_mng::allocateResources(Process process) {
 			}
 	}
 
+	//if needed, allocates the free printer
 	if(process.printer) {
 		for(bool &element : printers)
 			if(element == true) {
@@ -34,6 +24,7 @@ bool Resources_mng::allocateResources(Process process) {
 			}
 	}
 
+	//if needed, allocates the free modem
 	if(process.modem) {
 		for(bool &element : modems)
 			if(element == true) {
@@ -42,6 +33,7 @@ bool Resources_mng::allocateResources(Process process) {
 			}
 	}
 
+	//if needed, allocates the free sata
 	if(process.sata) {
 		for(bool &element : satas)
 			if(element == true) {
@@ -50,10 +42,12 @@ bool Resources_mng::allocateResources(Process process) {
 			}
 	}
 
-	return true;
+	return true; //returns true if resources were allocated
 }
 
+//deallocate every resource in use
 bool Resources_mng::deallocateResources(Process process) {
+	//if needed, frees any used scanner
 	if(process.scanner) {
 		for(bool &element : scanners)
 			if(element == false) {
@@ -62,6 +56,7 @@ bool Resources_mng::deallocateResources(Process process) {
 			}
 	}
 
+	//if needed, frees any used printer
 	if(process.printer) {
 		for(bool &element : printers)
 			if(element == false) {
@@ -70,6 +65,7 @@ bool Resources_mng::deallocateResources(Process process) {
 			}
 	}
 
+	//if needed, frees any used modem
 	if(process.modem) {
 		for(bool &element : modems)
 			if(element == false) {
@@ -78,6 +74,7 @@ bool Resources_mng::deallocateResources(Process process) {
 			}
 	}
 
+	//if needed, frees any used sata
 	if(process.sata) {
 		for(bool &element : satas)
 			if(element == false) {
@@ -86,12 +83,13 @@ bool Resources_mng::deallocateResources(Process process) {
 			}
 	}
 
-	return true;
-}
+	return true; //returns true if operation is successful
 
+//check resources availability
 bool Resources_mng::checkResourcesAvailability(Process process) const {
 	bool available = false;
 
+	//if needed, checks if there's a scanner available
 	if(process.scanner) {
 		available = false;
 		for(const bool &element : scanners)
@@ -100,9 +98,10 @@ bool Resources_mng::checkResourcesAvailability(Process process) const {
 				break;
 			}
 		if(!available)
-			return false;
+			return false; //returns false if there's no scanner available
 	}
 
+	//if needed, checks if there's a printer available
 	if(process.printer) {
 		available = false;
 		for(const bool &element : printers)
@@ -111,9 +110,10 @@ bool Resources_mng::checkResourcesAvailability(Process process) const {
 				break;
 			}
 		if(!available)
-			return false;
+			return false; //returns false if there's no printer available
 	}
 
+	//if needed, checks if there's a modem available
 	if(process.modem) {
 		available = false;
 		for(const bool &element : modems)
@@ -122,19 +122,21 @@ bool Resources_mng::checkResourcesAvailability(Process process) const {
 				break;
 			}
 		if(!available)
-			return false;
+			return false; //returns false if there's no modem available
 	}
 
+	//if needed, checks if there's a sata available
 	if(process.sata) {
 		available = false;
 		for(const bool &element : satas)
 			if(element == true) {
 				available = true;
 				break;
+					//checks if scanner is available
 			}
 		if(!available)
-			return false;
+			return false; //returns false if there's no sata available
 	}
 
-	return true;
+	return true; //returns true if all resources are available
 }

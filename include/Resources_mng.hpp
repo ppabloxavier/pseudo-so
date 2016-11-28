@@ -4,16 +4,19 @@
 #include <array>
 #include "Process.hpp"
 
-#define N_RESOURCES 4
+#define N_RESOURCES 4 //resources quantity
 
 class Resources_mng {
+	//each resource is represented by an array
 	std::array<bool, 1> scanners;
 	std::array<bool, 2> printers;
 	std::array<bool, 1> modems;
 	std::array<bool, 2> satas;
 
 private:
+	//default constructor
 	Resources_mng() {
+		//set all resources to available (i.e. true)
 		for(bool &element : scanners)
 			element = true;
 		for(bool &element : printers)
@@ -24,15 +27,23 @@ private:
 			element = true;
 	};
 
+	//default deconstructor
 	~Resources_mng() {};
 
-public:
+	//check resources availability
+	//returns true if all resources are available
+	bool checkResourcesAvailability(Process process) const;
 
+public:
+	//allocates every resource needed, doesn't allocates anything if not needed
+	//returns true if resources were allocated
+	//returns false if resources are unavailable
 	bool allocateResources(Process process);
 
+	//deallocate every resource in use
+	//returns true if operation is successful
 	bool deallocateResources(Process process);
 
-	bool checkResourcesAvailability(Process process) const;
 };
 
 #endif

@@ -11,13 +11,63 @@ há preempção na alocação dos dispositivos de E/S.
 Processos de tempo-real não precisam de recursos de I/O e podem ter tamanho fixo, ficando a cargo
 do programador. */
 
-#include "Resources_mng.hpp"
+#include "../include/Resources_mng.hpp"
+#include "../include/Process.hpp"
 
-Resources_mng::Resources_mng() {
+bool Resources_mng::allocateResources(Process process) {
+	return false;
+}
 
-};
+bool Resources_mng::deallocateResources(Process process) {
+	return false;
+}
 
-Resources_mng::~Resources_mng() {
-      //do nothing
-};    
-      
+bool Resources_mng::checkResourcesAvailability(Process process) const {
+	bool available = false;
+
+	if(process.scanner) {
+		available = false;
+		for(const bool &element : scanners)
+			if(element == true) {
+				available = true;
+				break;
+			}
+		if(!available)
+			return false;
+	}
+
+	if(process.printer) {
+		available = false;
+		for(const bool &element : printers)
+			if(element == true) {
+				available = true;
+				break;
+			}
+		if(!available)
+			return false;
+	}
+
+	if(process.modem) {
+		available = false;
+		for(const bool &element : modems)
+			if(element == true) {
+				available = true;
+				break;
+			}
+		if(!available)
+			return false;
+	}
+
+	if(process.sata) {
+		available = false;
+		for(const bool &element : satas)
+			if(element == true) {
+				available = true;
+				break;
+			}
+		if(!available)
+			return false;
+	}
+
+	return true;
+}

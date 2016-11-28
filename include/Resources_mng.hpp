@@ -7,13 +7,13 @@
 #define N_RESOURCES 4 //resources quantity
 
 class Resources_mng {
+private:
 	//each resource is represented by an array
 	std::array<bool, 1> scanners;
 	std::array<bool, 2> printers;
 	std::array<bool, 1> modems;
 	std::array<bool, 2> satas;
 
-private:
 	//default constructor
 	Resources_mng() {
 		//set all resources to available (i.e. true)

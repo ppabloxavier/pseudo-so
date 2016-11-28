@@ -84,9 +84,10 @@ bool Resources_mng::deallocateResources(Process process) {
 	}
 
 	return true; //returns true if operation is successful
+}
 
 //check resources availability
-bool Resources_mng::checkResourcesAvailability(Process process) const {
+bool Resources_mng::checkResourcesAvailability(Process process) const{
 	bool available = false;
 
 	//if needed, checks if there's a scanner available

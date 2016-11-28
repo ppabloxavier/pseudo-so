@@ -1,4 +1,4 @@
-#include "Memory_mng.hpp"
+#include "../include/Memory_mng.hpp"
 
 Memory_mng::Memory_mng() {
 
@@ -15,7 +15,8 @@ void Memory_mng::allocateMemory(Process process) {
 		end = USER_END;
 	}
 
-	for(i = begin; i <= end; i=i) {
+	i = begin;
+	while(i <= end) {
 		// se memoria ocupada, pule até achar um espaço vazio
 		if(ramMemory.at(i)) {
 			while(ramMemory.at(i)) {
@@ -30,7 +31,7 @@ void Memory_mng::allocateMemory(Process process) {
 				i++;
 			}
 
-			// serviu?
+			// serviu? aloque
 			if (freeSize >= process.memory_blocks) {
 				process.memory_offset = offset;
 				for (j=offset; j<i; j++) {
@@ -39,8 +40,8 @@ void Memory_mng::allocateMemory(Process process) {
 				allocationOcurred = true;
 				break;
 			} else {
-				// nao serviu? pule este espaço pequeno
-				i = i + freeSize;
+				// nao serviu? pule este espaço pequeno de memória livre
+				i = offset + freeSize;
 			}
 		}
 	}
